@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="OBD2 Sound">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>OBD2 Sound Simulator</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🏎️ OBD2 Sound Simulator</h1>
+            <div class="status" id="status">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Niepołączony</span>
+            </div>
+        </header>
+
+        <!-- Connection Section -->
+        <section class="card">
+            <h2>Połączenie OBD2</h2>
+            <button id="connectBtn" class="btn btn-primary">
+                📡 Połącz z ELM327
+            </button>
+            <div id="deviceInfo" class="device-info hidden">
+                <p><strong>Urządzenie:</strong> <span id="deviceName">-</span></p>
+                <button id="disconnectBtn" class="btn btn-secondary">Rozłącz</button>
+            </div>
+        </section>
+
+        <!-- Sound Selection -->
+        <section class="card">
+            <h2>Wybór dźwięku silnika</h2>
+            <div class="sound-selector">
+                <button class="sound-btn active" data-sound="v8">
+                    <span class="sound-icon">🔊</span>
+                    <span>V8 Muscle</span>
+                </button>
+                <button class="sound-btn" data-sound="v6">
+                    <span class="sound-icon">🔊</span>
+                    <span>V6 Sport</span>
+                </button>
+                <button class="sound-btn" data-sound="2jz">
+                    <span class="sound-icon">🔊</span>
+                    <span>2JZ Turbo</span>
+                </button>
+                <button class="sound-btn" data-sound="v10">
+                    <span class="sound-icon">🔊</span>
+                    <span>V10 F1</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- RPM Display -->
+        <section class="card">
+            <h2>Obroty silnika</h2>
+            <div class="rpm-display">
+                <div class="rpm-value" id="rpmValue">0</div>
+                <div class="rpm-label">RPM</div>
+            </div>
+            <div class="rpm-bar-container">
+                <div class="rpm-bar" id="rpmBar"></div>
+            </div>
+            <div class="rpm-range">
+                <span>0</span>
+                <span>8000</span>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="card">
+            <h2>Sterowanie</h2>
+            <div class="controls">
+                <button id="playBtn" class="btn btn-success" disabled>
+                    ▶️ Start
+                </button>
+                <button id="stopBtn" class="btn btn-danger" disabled>
+                    ⏹️ Stop
+                </button>
+            </div>
+            
+            <div class="volume-control">
+                <label for="volumeSlider">🔊 Głośność</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                <span id="volumeValue">70%</span>
+            </div>
+
+            <div class="settings-toggle">
+                <label>
+                    <input type="checkbox" id="autoStart" checked>
+                    Auto-start przy połączeniu
+                </label>
+            </div>
+        </section>
+		
+		<!-- Effects Control Panel -->
+<div class="effects-panel">
+    <h3>🔧 Efekty Dźwięku</h3>
+    
+    <div class="effect-control">
+        <label>
+            <input type="checkbox" id="turboToggle" checked>
+            🌪️ Turbo Whistle
+        </label>
+    </div>
+
+    <div class="effect-control">
+        <label>
+            <input type="checkbox" id="flutterToggle" checked>
+            ⚡ Engine Flutter
+        </label>
+    </div>
+
+    <div class="effect-control">
+        <label>
+            <input type="checkbox" id="exhaustToggle" checked>
+            🔥 Exhaust Resonance
+        </label>
+    </div>
+
+    <div class="effect-control">
+        <label>
+            <input type="checkbox" id="gearShiftToggle" checked>
+            🔄 Gear Shift Detection
+        </label>
+    </div>
+
+    <button id="gearShiftBtn" class="btn-secondary">
+        🎬 Test Gear Shift
+    </button>
+</div>
+
+        <!-- Debug Info -->
+        <section class="card debug-section">
+            <h2>Diagnostyka</h2>
+            <div class="debug-info">
+                <div class="debug-row">
+                    <span>Bluetooth:</span>
+                    <span id="debugBluetooth">-</span>
+                </div>
+                <div class="debug-row">
+                    <span>Audio:</span>
+                    <span id="debugAudio">-</span>
+                </div>
+                <div class="debug-row">
+                    <span>Ostatnia komenda:</span>
+                    <span id="debugCommand">-</span>
+                </div>
+                <div class="debug-row">
+                    <span>Odpowiedź:</span>
+                    <span id="debugResponse">-</span>
+                </div>
+            </div>
+            <button id="testSoundBtn" class="btn btn-secondary">🔊 Test dźwięku</button>
+        </section>
+
+        <!-- Instructions -->
+        <section class="card instructions">
+            <h2>Instrukcja</h2>
+            <ol>
+                <li>Podłącz adapter ELM327 do portu OBD2 w samochodzie</li>
+                <li>Włącz zapłon (nie musisz uruchamiać silnika do testów)</li>
+                <li>Kliknij "Połącz z ELM327" i wybierz urządzenie</li>
+                <li>Wybierz dźwięk silnika</li>
+                <li>Kliknij "Start" - dźwięk będzie dostosowany do obrotów</li>
+            </ol>
+            <div class="warning">
+                ⚠️ <strong>Ważne:</strong> Web Bluetooth ma ograniczone wsparcie na iOS. 
+                Najlepiej działa na Chrome/Android. Na iOS może wymagać 
+                zewnętrznej przeglądarki jak <strong>Bluefy</strong>.
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>OBD2 Sound Simulator v1.0</p>
+            <button id="installBtn" class="btn btn-install hidden">
+                📲 Zainstaluj aplikację
+            </button>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Łączenie z ELM327...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
