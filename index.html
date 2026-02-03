@@ -61,17 +61,43 @@
         <!-- RPM Display -->
         <section class="card">
             <h2>Obroty silnika</h2>
-            <div class="rpm-display">
-                <div class="rpm-value" id="rpmValue">0</div>
-                <div class="rpm-label">RPM</div>
-            </div>
-            <div class="rpm-bar-container">
-                <div class="rpm-bar" id="rpmBar"></div>
-            </div>
-            <div class="rpm-range">
-                <span>0</span>
-                <span>8000</span>
-            </div>
+           <!-- RPM Display -->
+<div class="rpm-section">
+    <div class="rpm-display">
+        <div id="rpmValue" class="rpm-value">0</div>
+        <div class="rpm-label">RPM</div>
+    </div>
+    <div class="rpm-bar-container">
+        <div id="rpmBar" class="rpm-bar"></div>
+    </div>
+</div>
+
+<!-- NEW: RPM Range Control -->
+<div class="rpm-range-section">
+    <h3>⚙️ RPM Range</h3>
+    
+    <div class="rpm-control">
+        <label for="minRpmSlider">Min RPM: <span id="minRpmValue">800</span></label>
+        <input type="range" id="minRpmSlider" min="500" max="2000" value="800" step="100">
+    </div>
+
+    <div class="rpm-control">
+        <label for="maxRpmSlider">Max RPM: <span id="maxRpmValue">7000</span></label>
+        <input type="range" id="maxRpmSlider" min="3000" max="10000" value="7000" step="100">
+    </div>
+
+    <div class="rpm-info">
+        <p id="rpmRangeInfo">Range: 800 - 7000 RPM</p>
+        <button id="resetRpmBtn" class="btn btn-secondary">🔄 Reset to Default</button>
+    </div>
+</div>
+
+<!-- Playback Controls -->
+<div class="controls-section">
+    <button id="playBtn" class="btn btn-play" disabled>▶️ Odtwórz</button>
+    <button id="stopBtn" class="btn btn-stop" disabled>⏹️ Stop</button>
+    <button id="testSoundBtn" class="btn btn-secondary">🔊 Test Sound</button>
+</div>
         </section>
 
         <!-- Controls -->
